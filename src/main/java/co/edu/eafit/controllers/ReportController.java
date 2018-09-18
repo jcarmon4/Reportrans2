@@ -1,9 +1,11 @@
 package co.edu.eafit.controllers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
@@ -12,18 +14,26 @@ import co.edu.eafit.models.Report;
 
 @RestController
 public class ReportController {
-	private List<Report> reportList = new ArrayList<Report>();
+	private HashMap<String, Report> reportMap = new HashMap<>();
 	
 	public ReportController() {
-		reportList.add(new Report(1, "CAR993", "taxi", 1, "Me dejo tirado"));
-		reportList.add(new Report(2, "ASD678", "bus", 1, "No me devolvio correctamente"));
-		reportList.add(new Report(3, "GHJ", "taxi", 5, "Muy amable"));
+		reportMap.put("CAR993", new Report(1, "CAR993", "taxi", 1, "Me dejo tirado"));
+		reportMap.put("ASD678", new Report(2, "ASD678", "bus", 1, "No me devolvio correctamente"));
+		reportMap.put("GHJ", new Report(3, "GHJ", "taxi", 5, "Muy amable"));
 	}
 	
 	@GetMapping(path="/report", produces="application/json")
-	public String getReports() {
+	public String getReports(@RequestParam(value="carPlate", required=false) String carPlate) {
 		Gson gson = new Gson();
-		return gson.toJson(reportList);
+		
+		if (carPlate == null) {	
+			return gson.toJson(reportMap.values());
+		} else {
+			Report report = reportMap.get(carPlate);
+			return gson.toJson(report);
+		}
+		
+		
 	}
 
 }
