@@ -19,7 +19,7 @@ public class ReportController {
 	public ReportController() {
 		reportMap.put("CAR993", new Report(1, "CAR993", "taxi", 1, "Me dejo tirado"));
 		reportMap.put("ASD678", new Report(2, "ASD678", "bus", 1, "No me devolvio correctamente"));
-		reportMap.put("GHJ", new Report(3, "GHJ", "taxi", 5, "Muy amable"));
+		reportMap.put("GHJ098", new Report(3, "GHJ098", "taxi", 5, "Muy amable"));
 	}
 	
 	@GetMapping(path="/report", produces="application/json")
@@ -30,10 +30,9 @@ public class ReportController {
 			return gson.toJson(reportMap.values());
 		} else {
 			Report report = reportMap.get(carPlate);
-			return gson.toJson(report);
+			List<Report> reportList = new ArrayList<>();
+			reportList.add(report);
+			return gson.toJson(reportList);
 		}
-		
-		
 	}
-
 }
