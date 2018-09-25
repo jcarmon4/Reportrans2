@@ -1,6 +1,12 @@
 package co.edu.eafit.models;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Report {
+	
+	@Id
 	private Integer id;
 	private String carPlate;
 	private String type;
