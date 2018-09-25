@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,10 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.Gson;
 
 import co.edu.eafit.models.Report;
+import co.edu.eafit.repositories.ReportRepository;
 
 @RestController
 public class ReportController {
 	private HashMap<String, Report> reportMap = new HashMap<>();
+	
+	@Autowired
+	private ReportRepository reportRepository;
 	
 	public ReportController() {
 		reportMap.put("CAR993", new Report(1, "CAR993", "taxi", 1, "Me dejo tirado"));
@@ -43,6 +48,8 @@ public class ReportController {
 		Gson gson = new Gson();
 		Report report = gson.fromJson(json, Report.class);
 		reportMap.put(report.getCarPlate(), report);
-		return gson.toJson(report);
+		
+		Report stored = reportRepository.save(report);
+		return gson.toJson(stored);
 	}
 }
