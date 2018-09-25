@@ -24,9 +24,6 @@ public class ReportController {
 	private ReportRepository reportRepository;
 	
 	public ReportController() {
-		reportMap.put("CAR993", new Report(1, "CAR993", "taxi", 1, "Me dejo tirado"));
-		reportMap.put("ASD678", new Report(2, "ASD678", "bus", 1, "No me devolvio correctamente"));
-		reportMap.put("GHJ098", new Report(3, "GHJ098", "taxi", 5, "Muy amable"));
 	}
 	
 	@GetMapping(path="/report", produces="application/json")
@@ -34,6 +31,11 @@ public class ReportController {
 		Gson gson = new Gson();
 		
 		if (carPlate == null) {	
+			List<Report> reportList = reportRepository.findAll();
+			reportMap.clear();
+			for (Report report : reportList) {
+				reportMap.put(report.getCarPlate(), report);
+			}
 			return gson.toJson(reportMap.values());
 		} else {
 			Report report = reportMap.get(carPlate);
