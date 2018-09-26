@@ -18,7 +18,7 @@ import co.edu.eafit.repositories.ReportRepository;
 
 @RestController
 public class ReportController {
-	private HashMap<String, Report> reportMap = new HashMap<>();
+	private HashMap<Integer, Report> reportMap = new HashMap<>();
 	
 	@Autowired
 	private ReportRepository reportRepository;
@@ -34,7 +34,7 @@ public class ReportController {
 			List<Report> reportList = reportRepository.findAll();
 			reportMap.clear();
 			for (Report report : reportList) {
-				reportMap.put(report.getCarPlate(), report);
+				reportMap.put(report.getId(), report);
 			}
 			return gson.toJson(reportMap.values());
 		} else {
@@ -47,7 +47,7 @@ public class ReportController {
 	public String createReport(@RequestBody String json) {
 		Gson gson = new Gson();
 		Report report = gson.fromJson(json, Report.class);
-		reportMap.put(report.getCarPlate(), report);
+		reportMap.put(report.getId(), report);
 		
 		Report stored = reportRepository.save(report);
 		return gson.toJson(stored);
