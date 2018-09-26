@@ -38,10 +38,8 @@ public class ReportController {
 			}
 			return gson.toJson(reportMap.values());
 		} else {
-			Report report = reportMap.get(carPlate);
-			List<Report> reportList = new ArrayList<>();
-			reportList.add(report);
-			return gson.toJson(reportList);
+			List<Report> reportsByCarPlate = reportRepository.findByCarPlate(carPlate);
+			return gson.toJson(reportsByCarPlate);
 		}
 	}
 	
